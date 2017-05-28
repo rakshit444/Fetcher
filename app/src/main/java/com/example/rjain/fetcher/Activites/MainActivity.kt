@@ -21,6 +21,10 @@ import java.util.ArrayList
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import android.net.NetworkInfo
+import android.net.ConnectivityManager
+import android.widget.Toast
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -40,6 +44,9 @@ class MainActivity : AppCompatActivity() {
         mRecyclerView!!.setHasFixedSize(true)
         mRecyclerView!!.layoutManager = layoutManager
 
+        if(!isNetworkAvailable()){
+            Toast.makeText(this,"Check Your Internet Connection", Toast.LENGTH_LONG).show();
+        }
         Log.i(TAG, "recycleview layout is set")
 
     }
@@ -77,5 +84,11 @@ class MainActivity : AppCompatActivity() {
     companion object {
 
         private val TAG = "Main Activity"
+    }
+
+    private fun isNetworkAvailable(): Boolean {
+        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetworkInfo = connectivityManager.activeNetworkInfo
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected
     }
 }
